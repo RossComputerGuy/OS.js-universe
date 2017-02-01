@@ -5,7 +5,7 @@
   "build": {
     "copy": [
       "metadata.json",
-      "api.js"
+      "api.js",
       "extension.js"
     ]
   },
