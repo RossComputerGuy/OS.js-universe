@@ -65,9 +65,9 @@
                     method: "GET"
                 },function(err,res) {
                     if(err) throw new Error(err);
-                    console.log(res.body);
                     var metadata = JSON.parse(res.body);
-                    if(metadata.version > OSjs.Extensions["updater"].VERSION) response = true;
+                    console.log(metadata.version + " > "+OSjs.Extensions["updater"].VERSION);
+                    response = metadata.version > OSjs.Extensions["updater"].VERSION;
                 });
                 return response;
             case OSjs.Extensions["updater"].Events.UPDATE:
