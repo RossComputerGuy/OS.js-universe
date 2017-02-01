@@ -36,7 +36,7 @@
         
         var package = OSjs.Applications[pkg.className] || OSjs.Extensions[pkg.className];
         
-        if(package.onUpdate) {
+        if(typeof(package.onUpdate) == "function") {
             return package.onUpdate(OSjs.Extensions["updater"].Events.CHECK);
         }
         return false;
@@ -57,9 +57,9 @@
     }
     
     function onUpdate(event) {
+        var r = false;
         switch(event) {
             case OSjs.Extensions["updater"].Events.CHECK:
-                var response = false;
                 API.curl({
                     url: "https://raw.githubusercontent.com/SpaceboyRoss01/OS.js-universe/master/updater/metadata.json",
                     method: "GET"
@@ -67,11 +67,10 @@
                     if(err) throw new Error(err);
                     var metadata = JSON.parse(res.body);
                     console.log(metadata.version + " > "+OSjs.Extensions["updater"].VERSION);
-                    response = metadata.version > OSjs.Extensions["updater"].VERSION;
+                    r = metadata.version > OSjs.Extensions["updater"].VERSION;
                 });
-                return response;
+                break;
             case OSjs.Extensions["updater"].Events.UPDATE:
-                var r = false;
                 var pm = Core.getPackageManager();
                 API.curl({
                     url: "https://raw.githubusercontent.com/SpaceboyRoss01/OS.js-universe/master/bin/updater.zip",
@@ -86,10 +85,11 @@
                         });
                     });
                 });
-                return r;
+                break;
             default:
                 throw new Error("Invalid Action!");
         }
+        return r;
     }
     
     OSjs.Extensions["updater"] = OSjs.Extensions["updater"] || {};
