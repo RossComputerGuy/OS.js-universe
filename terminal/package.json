@@ -1,0 +1,14 @@
+{
+  "name": "osjs-terminal",
+  "version": "0.0.1",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "build": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Spaceboy Ross",
+  "license": "ISC",
+  "dependencies": {
+    "jquery.terminal": "file:jquery.terminal"
+  }
+}

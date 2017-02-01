@@ -1,0 +1,13 @@
+{
+    "className": "store",
+    "classType": "simple",
+    "name": "Store",
+    "mime": null,
+    "category": "system",
+    "icon": "categories/applications-system.png",
+    "preload": [
+        {"src": "main.js", "type": "javascript"},
+        {"src": "main.css", "type": "stylesheet"},
+        {"src": "scheme.html", "type": "scheme"}
+    ]
+}

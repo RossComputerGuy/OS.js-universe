@@ -35,7 +35,7 @@
         var pkg = pm.getPackage(name);
         
         var package = OSjs.Applications[pkg.className] || OSjs.Extensions[pkg.className];
-        
+        if(typeof(package) != "object") return false;
         if(typeof(package.onUpdate) == "function") {
             return package.onUpdate(OSjs.Extensions["updater"].Events.CHECK);
         }
@@ -49,7 +49,7 @@
         var pkg = pm.getPackage(name);
         
         var package = OSjs.Applications[name] || OSjs.Extensions[name];
-        
+        if(typeof(package) != "object") return false;
         if(typeof(package.onUpdate) == "function") {
             return package.onUpdate(OSjs.Extensions["updater"].Events.UPDATE);
         }
