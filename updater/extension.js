@@ -65,6 +65,7 @@
                     method: "GET"
                 },function(err,res) {
                     if(err) throw new Error(err);
+                    console.log(res.body);
                     var metadata = JSON.parse(res.body);
                     if(metadata.version > OSjs.Extensions["updater"].VERSION) response = true;
                 });
