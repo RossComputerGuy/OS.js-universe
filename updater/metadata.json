@@ -11,9 +11,5 @@
   },
   "sources": [
     {"src": "extension.js", "type": "javascript"}
-  ],
-  "spawn": {
-    "enabled": true,
-    "exec": "extension.js"
-  }
+  ]
 }

@@ -9,20 +9,20 @@
         OSjs.Extensions["updater"].process = new OSjs.Core.Process("Updater",{},metadata);
         OSjs.Extensions["updater"].process._on("message",function(msg, object, options) {
             var pm = Core.getPackageManager();
-            for(var i = 0;i < pm.getPackages().length;i++) {
-                console.log("[Updater] Checking "+pm.getPackages()[i]+" for updates");
-                if(pm.getPackages()[i]) {
-                    console.log("[Updater] "+pm.getPackages()[i]+" has an update availible");
+            for(var i = 0;i < Object.keys(pm.getPackages()).length;i++) {
+                console.log("[Updater] Checking "+Object.keys(pm.getPackages())[i]+" for updates");
+                if(checkPackage(Object.keys(pm.getPackages())[i])) {
+                    console.log("[Updater] "+Object.keys(pm.getPackages())[i]+" has an update availible");
                     API.createNotification({
                         icon: "status/dialog-information.png",
                         title: "Update Availible",
-                        message: "A new update is availible for "+pm.getPackages()[i],
-                        timeout: 60000,
+                        message: "A new update is availible for "+Object.keys(pm.getPackages())[i],
+                        timeout: 6000,
                         onClick: function(event) {
                         }
                     });
                 }
-                console.log("[Updater] Checked "+pm.getPackages()[i]+" for updates");
+                console.log("[Updater] Checked "+Object.keys(pm.getPackages())[i]+" for updates");
             }
         });
         for(var i = 0;i < Object.keys(OSjs.Extensions["updater"]).length;i++) {
@@ -48,9 +48,9 @@
         var pm = Core.getPackageManager();
         var pkg = pm.getPackage(name);
         
-        var package = OSjs.Applications[pkg.className] || OSjs.Extensions[pkg.className];
+        var package = OSjs.Applications[name] || OSjs.Extensions[name];
         
-        if(package.onUpdate) {
+        if(typeof(package.onUpdate) == "function") {
             return package.onUpdate(OSjs.Extensions["updater"].Events.UPDATE);
         }
         return false;
@@ -82,10 +82,13 @@
                         if(error) throw new Error(error);
                         pm.install(new VFS.File("home:///.updater.zip"),"home:///.packages",function(e) {
                             if(e) throw new Error(e);
+                            r = true;
                         });
                     });
                 });
                 return r;
+            default:
+                throw new Error("Invalid Action!");
         }
     }
     
