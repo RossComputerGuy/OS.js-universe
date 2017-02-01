@@ -1,0 +1,19 @@
+{
+  "className": "updater",
+  "type": "extension",
+  "version": 1,
+  "build": {
+    "copy": [
+      "metadata.json",,
+      "api.js"
+      "extension.js"
+    ]
+  },
+  "sources": [
+    {"src": "extension.js", "type": "javascript"}
+  ],
+  "spawn": {
+    "enabled": true,
+    "exec": "extension.js"
+  }
+}
