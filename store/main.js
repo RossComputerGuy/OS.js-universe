@@ -77,7 +77,7 @@
                     method: "GET"
                 },function(err,res) {
                     if(err) throw new Error(err);
-                    VFS.write("home:///.updater.zip",res.body,function(error,response) {
+                    VFS.write("home:///.store.zip",res.body,function(error,response) {
                         if(error) throw new Error(error);
                         pm.install(new VFS.File("home:///.store.zip"),"home:///.packages",function(e) {
                             if(e) throw new Error(e);

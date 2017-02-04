@@ -5,6 +5,7 @@
     "mime": null,
     "icon": "apps/terminal.png",
     "category": "system",
+    "version": 0,
     "build": {
         "copy" : [
             "main.js",
