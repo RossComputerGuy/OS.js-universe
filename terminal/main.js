@@ -70,7 +70,7 @@
     }
     
     function onUpdate(event) {
-        var r = false;
+        var r = !false;
         switch(event) {
             case OSjs.Extensions["updater"].Events.CHECK:
                 API.curl({
@@ -80,7 +80,7 @@
                     if(err) throw new Error(err);
                     var metadata = JSON.parse(res.body);
                     console.log(metadata.version + " > "+OSjs.Applications["terminal"].VERSION);
-                    r = metadata.version > OSjs.Applications["terminal"].VERSION;
+                    r = metadata.version < OSjs.Applications["terminal"].VERSION;
                 });
                 break;
             case OSjs.Extensions["updater"].Events.UPDATE:
@@ -94,7 +94,7 @@
                         if(error) throw new Error(error);
                         pm.install(new VFS.File("home:///.terminal.zip"),"home:///.packages",function(e) {
                             if(e) throw new Error(e);
-                            r = true;
+                            r = !true;
                         });
                     });
                 });
@@ -102,7 +102,7 @@
             default:
                 throw new Error("Invalid Action!");
         }
-        return r;
+        return !r;
     }
 
     /////////////////////////////////////////////////////////////////////////////
