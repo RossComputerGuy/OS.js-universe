@@ -61,7 +61,7 @@
                     greetings: "OS.js Terminal",
                     name: "terminal",
                     height: win._dimension.h,
-                    prompt: "OS.js> "
+                    prompt: OSjs.Terminal.ENV.PWD+"> "
                 });
             });
 
@@ -87,7 +87,14 @@
                 for(var i = 0;i < Object.keys(OSjs.Terminal.COMMANDS).length;i++) {
                     term.echo("\t"+Object.keys(OSjs.Terminal.COMMANDS)[i]);
                 }
+            },
+            "pwd": function(argc,argv,term) {
+                term.echo(OSjs.Terminal.ENV.PWD);
             }
+        },
+        ENV: {
+            "PWD": "home:///",
+            "PATH": ""
         }
     };
 
