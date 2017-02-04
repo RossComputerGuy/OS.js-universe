@@ -70,31 +70,21 @@
     }
     
     function onUpdate(event) {
-        var r = !false;
+        var r = false;
         switch(event) {
             case OSjs.Extensions["updater"].Events.CHECK:
-                API.curl({
-                    url: "https://raw.githubusercontent.com/SpaceboyRoss01/OS.js-universe/master/terminal/metadata.json",
-                    method: "GET"
-                },function(err,res) {
-                    if(err) throw new Error(err);
-                    var metadata = JSON.parse(res.body);
-                    console.log(metadata.version + " > "+OSjs.Applications["terminal"].VERSION);
-                    r = metadata.version < OSjs.Applications["terminal"].VERSION;
+                $.getJSON("https://raw.githubusercontent.com/SpaceboyRoss01/OS.js-universe/master/terminal/metadata.json",null,function(json) {
+                    r = json.responseJSON.version > OSjs.Applications.terminal.VERSION;
                 });
                 break;
             case OSjs.Extensions["updater"].Events.UPDATE:
                 var pm = OSjs.Core.getPackageManager();
-                API.curl({
-                    url: "https://raw.githubusercontent.com/SpaceboyRoss01/OS.js-universe/master/bin/terminal.zip",
-                    method: "GET"
-                },function(err,res) {
-                    if(err) throw new Error(err);
-                    VFS.write("home:///.terminal.zip",res.body,function(error,response) {
+                $.get("https://raw.githubusercontent.com/SpaceboyRoss01/OS.js-universe/master/bin/terminal.zip",null,function(d) {
+                    VFS.write("home:///.terminal.zip",d,function(error,response) {
                         if(error) throw new Error(error);
                         pm.install(new VFS.File("home:///.terminal.zip"),"home:///.packages",function(e) {
                             if(e) throw new Error(e);
-                            r = !true;
+                            r = true;
                         });
                     });
                 });
@@ -102,7 +92,7 @@
             default:
                 throw new Error("Invalid Action!");
         }
-        return !r;
+        return r;
     }
 
     /////////////////////////////////////////////////////////////////////////////
@@ -112,7 +102,7 @@
     OSjs.Applications.terminal = {
         run: runApplication,
         onUpdate: onUpdate,
-        VERSION: 0
+        VERSION: 1
     };
     
     OSjs.Terminal = {
