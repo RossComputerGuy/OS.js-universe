@@ -55,7 +55,7 @@
                     if(OSjs.Terminal.COMMANDS[cmd.split(" ")[0]] == null) {
                         term.error("Command "+cmd.split(" ")[0]+" does not exist!");
                     } else {
-                        OSjs.Terminal.COMMANDS[cmd.split(" ")[0]](cmd.split(" ").length,cmd.split(" "),term);
+                        OSjs.Terminal.COMMANDS[cmd.split(" ")[0]](cmd.split(" ").length,cmd.split(" "),term,app,win);
                     }
                 },{
                     greetings: "OS.js Terminal",
@@ -79,8 +79,51 @@
     
     OSjs.Terminal = {
         COMMANDS: {
+            "cat": function(argc,argv,term) {
+                var file = new OSjs.VFS.File(argv[1]);
+                OSjs.VFS.read(file,function(err,res) {
+                    if(err) {
+                        term.error(err);
+                        return;
+                    }
+                    console.log(res);
+                });
+            },
+            "cd": function(argc,argv,term) {
+                new OSjs.VFS.File(argv[1]);
+                term.exec("export PWD="+argv[1]);
+                term.set_prompt(OSjs.Terminal.ENV.PWD+"> ");
+            },
+            "cp": function(argc,argv,term) {
+                var parent = new OSjs.VFS.File(argv[1]);
+                var child = new OSjs.VFS.File(argv[2]);
+                OSjs.VFS.copy(parent,child,function(err) {
+                    if(err) {
+                        term.error(err);
+                        return;
+                    }
+                });
+            },
             "echo": function(argc,argv,term) {
                 term.echo(argv.join(" ").replace("echo ",""));
+            },
+            "export": function(argc,argv,term,app) {
+                if(argc == 1) {
+                    for(var i = 0;i < Object.keys(OSjs.Terminal.ENV).length;i++) {
+                        term.echo(Object.keys(OSjs.Terminal.ENV)[i]+"="+OSjs.Terminal.ENV[Object.keys(OSjs.Terminal.ENV)[i]]);
+                    }
+                } else {
+                    if(argv[1].split("=").length < 1) {
+                        if(OSjs.Terminal.ENV[argv[1]] == null) {
+                            term.error("Environmental Variable "+argv[1]+" is not set!");
+                            return;
+                        }
+                        term.echo(argv[1]+"="+OSjs.Terminal.ENV[argv[1]]);
+                        return;
+                    }
+                    OSjs.Terminal.ENV[argv[1].split("=")[0]] = argv[1].split("=")[1];
+                    app._setSetting("env."+argv[1].split("=")[0],argv[1].split("=")[1]);
+                }
             },
             "help": function(argc,argv,term) {
                 term.echo("List of Commands:");
@@ -88,8 +131,60 @@
                     term.echo("\t"+Object.keys(OSjs.Terminal.COMMANDS)[i]);
                 }
             },
+            "kill": function(argc,argv,term) {
+                if(argc < 1) {
+                    term.error("Missing PID!");
+                    return;
+                }
+                if(isNaN(parseInt(argv[1]))) {
+                    term.error("PID is not Number!");
+                    return;
+                }
+                OSjs.API.kill(parseInt(argv[1]));
+            },
+            "ls": function(argc,argv,term) {
+                var file = new OSjs.VFS.File(OSjs.Terminal.ENV.PWD);
+                if(argc > 1) file = new OSjs.VFS.File(argv[1]);
+                OSjs.VFS.find(file,null,function(err,res) {
+                    if(err) {
+                        term.error(err);
+                        return;
+                    }
+                    term.echo("Permissions\tType\tSize\tName");
+                    for(var i = 0;i < res.length;i++) {
+                        term.echo(res[i].permissions+"\t"+res[i].type+"\t"+res[i].size+"\t"+res[i].filename);
+                    }
+                });
+            },
+            "mkdir": function(argc,argv,term) {
+                var dir = new OSjs.VFS.File(argv[1]);
+                OSjs.VFS.mkdir(dir,function(err) {
+                    if(err) {
+                        term.error(err);
+                        return;
+                    }
+                });
+            },
+            "mv": function(argc,argv,term) {
+                var parent = new OSjs.VFS.File(argv[1]);
+                var child = new OSjs.VFS.File(argv[2]);
+                
+                OSjs.VFS.move(parent,child,function(err) {
+                    if(err) {
+                        term.error(err);
+                        return;
+                    }
+                });
+            },
             "pwd": function(argc,argv,term) {
                 term.echo(OSjs.Terminal.ENV.PWD);
+            },
+            "rm": function(argc,argv,term) {
+                var f = new OSjs.VFS.File(argv[1]);
+                f.delete();
+            },
+            "shutdown": function(argc,argv,term) {
+                OSjs.API.shutdown();
             }
         },
         ENV: {
