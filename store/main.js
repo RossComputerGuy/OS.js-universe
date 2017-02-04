@@ -66,7 +66,7 @@
                 },function(err,res) {
                     if(err) throw new Error(err);
                     var metadata = JSON.parse(res.body);
-                    console.log(metadata.version + " > "+OSjs.Applications["updater"].VERSION);
+                    console.log(metadata.version + " > "+OSjs.Applications["store"].VERSION);
                     r = metadata.version > OSjs.Applications["store"].VERSION;
                 });
                 break;
@@ -99,7 +99,7 @@
     OSjs.Applications.store = {
         run: runApplication,
         onUpdate: onUpdate,
-        VERSION: 0
+        VERSION: 1
     };
 
 })(OSjs.Core.Application, OSjs.Core.Window, OSjs.Utils, OSjs.API, OSjs.VFS, OSjs.GUI);
