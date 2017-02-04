@@ -1,0 +1,27 @@
+[
+    {
+        "className": "store",
+        "name": "Store",
+        "description": "An Application Store",
+        "category": "system",
+        "author": "Spaceboy Ross",
+        "version": "0.1",
+        "download": "https://raw.githubusercontent.com/SpaceboyRoss01/OS.js-universe/master/bin/store.zip"
+    },
+    {
+        "className": "terminal",
+        "name": "Terminal",
+        "description": "A Terminal Emulator",
+        "author": "Spaceboy Ross",
+        "version": "1.0",
+        "download": "https://raw.githubusercontent.com/SpaceboyRoss01/OS.js-universe/master/bin/terminal.zip"
+    },
+    {
+        "className": "updater",
+        "name": "Updater",
+        "description": "A Package Updater Service",
+        "author": "Spaceboy Ross",
+        "version": "1.0",
+        "download": "https://raw.githubusercontent.com/SpaceboyRoss01/OS.js-universe/master/bin/updater.zip"
+    }
+]
