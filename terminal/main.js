@@ -51,7 +51,12 @@
             });
 
             win._on("inited", function(scheme) {
-                window.$(".terminal-ui").terminal(function(command, term) {
+                window.$(".terminal-ui").terminal(function(cmd,term) {
+                    if(OSjs.Terminal.COMMANDS[cmd.split(" ")[0]] == null) {
+                        term.error("Command "+cmd.split(" ")[0]+" does not exist!");
+                    } else {
+                        OSjs.Terminal.COMMANDS[cmd.split(" ")[0]](cmd.split(" ").length,cmd.split(" "),term);
+                    }
                 },{
                     greetings: "OS.js Terminal",
                     name: "terminal",
@@ -70,6 +75,20 @@
 
     OSjs.Applications.terminal = {
         run: runApplication
+    };
+    
+    OSjs.Terminal = {
+        COMMANDS: {
+            "echo": function(argc,argv,term) {
+                term.echo(argv.join(" ").replace("echo ",""));
+            },
+            "help": function(argc,argv,term) {
+                term.echo("List of Commands:");
+                for(var i = 0;i < Object.keys(OSjs.Terminal.COMMANDS).length;i++) {
+                    term.echo("\t"+Object.keys(OSjs.Terminal.COMMANDS)[i]);
+                }
+            }
+        }
     };
 
 })(OSjs.Core.Application, OSjs.Core.Window, OSjs.Utils, OSjs.API, OSjs.VFS, OSjs.GUI,window.$);

@@ -8,8 +8,8 @@
     "build": {
         "copy" : [
             "main.js",
-            "node_modules/jquery.terminal/js/jquery.terminal.js",
             "node_modules/jquery.terminal/node_modules/jquery/dist/jquery.min.js",
+            "node_modules/jquery.terminal/js/jquery.terminal.js",
             "main.css",
             "node_modules/jquery.terminal/css/jquery.terminal.min.css",
             "scheme.html"
@@ -17,8 +17,8 @@
     },
     "preload": [
         {"src": "main.js", "type": "javascript"},
-        {"src": "node_modules/jquery.terminal/js/jquery.terminal.js", "type": "javascript"},
         {"src": "node_modules/jquery.terminal/node_modules/jquery/dist/jquery.min.js", "type": "javascript"},
+        {"src": "node_modules/jquery.terminal/js/jquery.terminal.js", "type": "javascript"},
         {"src": "main.css", "type": "stylesheet"},
         {"src": "node_modules/jquery.terminal/css/jquery.terminal.min.css", "type": "stylesheet"},
         {"src": "scheme.html", "type": "scheme"}
