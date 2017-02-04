@@ -60,24 +60,14 @@
         var r = false;
         switch(event) {
             case OSjs.Extensions["updater"].Events.CHECK:
-                API.curl({
-                    url: "https://raw.githubusercontent.com/SpaceboyRoss01/OS.js-universe/master/store/metadata.json",
-                    method: "GET"
-                },function(err,res) {
-                    if(err) throw new Error(err);
-                    var metadata = JSON.parse(res.body);
-                    console.log(metadata.version + " > "+OSjs.Applications["store"].VERSION);
-                    r = metadata.version > OSjs.Applications["store"].VERSION;
+                window.$.getJSON("https://raw.githubusercontent.com/SpaceboyRoss01/OS.js-universe/master/store/metadata.json",null,function(json) {
+                    r = json.version > OSjs.Applications.store.VERSION;
                 });
                 break;
             case OSjs.Extensions["updater"].Events.UPDATE:
                 var pm = OSjs.Core.getPackageManager();
-                API.curl({
-                    url: "https://raw.githubusercontent.com/SpaceboyRoss01/OS.js-universe/master/bin/store.zip",
-                    method: "GET"
-                },function(err,res) {
-                    if(err) throw new Error(err);
-                    VFS.write("home:///.store.zip",res.body,function(error,response) {
+                window.$.get("https://raw.githubusercontent.com/SpaceboyRoss01/OS.js-universe/master/bin/store.zip",null,function(d) {
+                    VFS.write("home:///.store.zip",d,function(error,response) {
                         if(error) throw new Error(error);
                         pm.install(new VFS.File("home:///.store.zip"),"home:///.packages",function(e) {
                             if(e) throw new Error(e);
@@ -99,7 +89,7 @@
     OSjs.Applications.store = {
         run: runApplication,
         onUpdate: onUpdate,
-        VERSION: 1
+        VERSION: 0
     };
 
 })(OSjs.Core.Application, OSjs.Core.Window, OSjs.Utils, OSjs.API, OSjs.VFS, OSjs.GUI);

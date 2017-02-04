@@ -73,14 +73,14 @@
         var r = false;
         switch(event) {
             case OSjs.Extensions["updater"].Events.CHECK:
-                $.getJSON("https://raw.githubusercontent.com/SpaceboyRoss01/OS.js-universe/master/terminal/metadata.json",null,function(json) {
-                    r = json.responseJSON.version > OSjs.Applications.terminal.VERSION;
+                window.$.getJSON("https://raw.githubusercontent.com/SpaceboyRoss01/OS.js-universe/master/terminal/metadata.json",null,function(json) {
+                    r = json.version > OSjs.Applications.terminal.VERSION;
                 });
                 break;
             case OSjs.Extensions["updater"].Events.UPDATE:
                 var pm = OSjs.Core.getPackageManager();
-                $.get("https://raw.githubusercontent.com/SpaceboyRoss01/OS.js-universe/master/bin/terminal.zip",null,function(d) {
-                    VFS.write("home:///.terminal.zip",d,function(error,response) {
+                window.$.get("https://raw.githubusercontent.com/SpaceboyRoss01/OS.js-universe/master/bin/terminal.zip",null,function(d) {
+                    OSjs.VFS.write("home:///.terminal.zip",d,function(error,response) {
                         if(error) throw new Error(error);
                         pm.install(new VFS.File("home:///.terminal.zip"),"home:///.packages",function(e) {
                             if(e) throw new Error(e);
@@ -102,7 +102,7 @@
     OSjs.Applications.terminal = {
         run: runApplication,
         onUpdate: onUpdate,
-        VERSION: 1
+        VERSION: 0
     };
     
     OSjs.Terminal = {

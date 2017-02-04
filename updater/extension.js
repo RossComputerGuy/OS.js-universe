@@ -60,24 +60,14 @@
         var r = false;
         switch(event) {
             case OSjs.Extensions["updater"].Events.CHECK:
-                API.curl({
-                    url: "https://raw.githubusercontent.com/SpaceboyRoss01/OS.js-universe/master/updater/metadata.json",
-                    method: "GET"
-                },function(err,res) {
-                    if(err) throw new Error(err);
-                    var metadata = JSON.parse(res.body);
-                    console.log(metadata.version + " > "+OSjs.Extensions["updater"].VERSION);
-                    r = metadata.version > OSjs.Extensions["updater"].VERSION;
+                window.$.getJSON("https://raw.githubusercontent.com/SpaceboyRoss01/OS.js-universe/master/updater/metadata.json",null,function(json) {
+                    r = json.version > OSjs.Extensions.updater.VERSION;
                 });
                 break;
             case OSjs.Extensions["updater"].Events.UPDATE:
-                var pm = Core.getPackageManager();
-                API.curl({
-                    url: "https://raw.githubusercontent.com/SpaceboyRoss01/OS.js-universe/master/bin/updater.zip",
-                    method: "GET"
-                },function(err,res) {
-                    if(err) throw new Error(err);
-                    VFS.write("home:///.updater.zip",res.body,function(error,response) {
+                var pm = OSjs.Core.getPackageManager();
+                window.$.get("https://raw.githubusercontent.com/SpaceboyRoss01/OS.js-universe/master/bin/updater.zip",null,function(d) {
+                    VFS.write("home:///.updater.zip",d,function(error,response) {
                         if(error) throw new Error(error);
                         pm.install(new VFS.File("home:///.updater.zip"),"home:///.packages",function(e) {
                             if(e) throw new Error(e);
@@ -101,5 +91,5 @@
         CHECK: 0,
         UPDATE: 1
     };
-    OSjs.Extensions["updater"].VERSION = 0;
+    OSjs.Extensions["updater"].VERSION = 1;
 })(OSjs.Utils,OSjs.VFS,OSjs.API,OSjs.GUI);

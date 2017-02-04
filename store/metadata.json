@@ -3,7 +3,7 @@
     "classType": "simple",
     "name": "Store",
     "mime": null,
-    "version": 1,
+    "version": 0,
     "category": "system",
     "icon": "categories/applications-system.png",
     "preload": [
