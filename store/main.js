@@ -47,11 +47,32 @@
 
             win._on("init", function(root, scheme) {
                 scheme.render(this, this._name, root);
+                var ListingSoftware = win._find("ListingSoftware");
+                var InstalledSoftware = win._find("InstalledSoftware");
+                
+                var pacman = OSjs.Core.getPackageManager();
+                
+                pacman.getStorePackages({},function(err,packages) {
+                    if(err) throw new Error(err);
+                    for(var i = 0;i < packages.length;i++) {
+                        var pkg = packages[i];
+                        ListingSoftware.set("columns",[
+                            {label:pkg.name},
+                            {label:pkg.description}
+                        ]);
+                    }
+                });
+                
+                for(var i = 0;i < pacman.getPackages().length;i++) {
+                    var pkg = pacman.getPackages()[i];
+                    InstalledSoftware.set("columns",[
+                        {label:pkg.name},
+                        {label:pkg.description}
+                    ]);
+                }
             });
 
             win._on("inited", function(scheme) {
-                var ListingSoftware = win._find("ListingSoftware");
-                console.log(ListingSoftware);
             });
             app._addWindow(win);
         });
