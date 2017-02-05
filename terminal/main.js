@@ -135,6 +135,9 @@
             "echo": function(argc,argv,term) {
                 term.echo(argv.join(" ").replace("echo ",""));
             },
+            "exit": function(argc,argv,term,app,win) {
+                win._close();
+            },
             "export": function(argc,argv,term,app) {
                 if(argc == 1) {
                     for(var i = 0;i < Object.keys(OSjs.Terminal.ENV).length;i++) {

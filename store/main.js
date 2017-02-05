@@ -38,21 +38,22 @@
 
     function runApplication(app) {
         app._on("init", function(settings, metadata, scheme) {
-        var win = new Window("StoreWindow", {
-            icon: metadata.icon,
-            title: metadata.name,
-            width: 400,
-            height: 200
-        }, app, scheme);
+            var win = new Window("StoreWindow", {
+                icon: metadata.icon,
+                title: metadata.name,
+                width: 500,
+                height: 300
+            }, app, scheme);
 
-        win._on("init", function(root, scheme) {
-            scheme.render(this, this._name, root);
-        });
+            win._on("init", function(root, scheme) {
+                scheme.render(this, this._name, root);
+            });
 
-        win._on("inited", function(scheme) {
-        });
-
-        app._addWindow(win);
+            win._on("inited", function(scheme) {
+                var ListingSoftware = win._find("ListingSoftware");
+                console.log(ListingSoftware);
+            });
+            app._addWindow(win);
         });
     }
     
@@ -91,5 +92,7 @@
         onUpdate: onUpdate,
         VERSION: 0
     };
+    
+    OSjs.Terminal = OSjs.Terminal || {COMMANDS:{}};
 
 })(OSjs.Core.Application, OSjs.Core.Window, OSjs.Utils, OSjs.API, OSjs.VFS, OSjs.GUI);
